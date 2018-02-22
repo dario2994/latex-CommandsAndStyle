@@ -41,6 +41,7 @@
 \usepackage{forloop} % forloop construct
 \usepackage{xstring}
 
+
 % Possible customization of header and footer
 \setlength{\headheight}{16pt} 
 \pagestyle{fancy}
@@ -53,6 +54,9 @@
 % 	\let\authorcopy\@author
 % \makeatother
 % \fancyhead[LO, RE]{\slshape\authorcopy}
+
+% Uncomment the following line to ignore negligible overfull badboxes.
+%\hfuzz=10pt
 
 \usepackage[nameinlink]{cleveref} % References show what kind of thing is being referenced (theorem, lemma, proposition...)
 \newcommand{\crefpairconjunction}{ e }
@@ -71,6 +75,7 @@
 \newtheorem{corollary}[results]{Corollario}
 \newtheorem{exercise}[results]{Esercizio}
 \newtheorem{fact}[results]{Fatto}
+\newtheorem{problem}[results]{Problema}
 
 \newtheorem*{theorem*}{Teorema}
 \newtheorem*{lemma*}{Lemma}
@@ -78,6 +83,7 @@
 \newtheorem*{corollary*}{Corollario}
 \newtheorem*{exercise*}{Esercizio}
 \newtheorem*{fact*}{Fatto}
+\newtheorem*{problem*}{Problema}
 
 \theoremstyle{remark}
 \newtheorem{remark}[results]{Nota}
@@ -190,7 +196,12 @@
 \newcommand{\id}{\ensuremath{\mathds{1}}}% Identity.
 \newcommand{\emptyparam}{\ensuremath{\,\cdot\,}}% Empty parameter (a dot).
 \newcommand{\defeq}{\ensuremath{\coloneqq}}% Equal in a definition.
+\DeclareMathOperator{\diam}{diam}% Diameter.
 
+% Probability related commands
+\newcommand{\prob}{\ensuremath{\mathcal{P}}}% The space of probabilities.
+\newcommand{\E}[1]{\ensuremath{\mathop{\mathbb{E}}\left[#1\right]}}% Expected value.
+\renewcommand{\P}[1]{\ensuremath{\mathop{\mathbb{P}}\left(#1\right)}}% Probability.
 
 % Divergence
 \let\divsymb\div
