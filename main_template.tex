@@ -7,6 +7,8 @@
 
 % \makeindex[title=Indice analitico]
 % \indexsetup{level=\section}
+% \addbibresource{biblio.bib}
+
  
 \begin{document} 
 \maketitle
@@ -30,10 +32,6 @@
 \cref{thm:second_thm}\\
 \cref{lem:second_lemma}
 
-% To include the bibliography you must execute:
-% pdflatex filename.tex; bibtex filename; pdflatex filename.tex; pdflatex filename.tex
-% A file bibliofile.bib must be present in the current directory.
-% \bibliographystyle{siam}
-% \bibliography{bibliofile}
+% \printbibliography[heading=bibintoc]
 
 \end{document}
