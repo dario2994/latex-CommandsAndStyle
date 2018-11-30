@@ -168,8 +168,25 @@
 \renewcommand{\C}{\ensuremath{\mathbb C}} % Complex numbers
 \renewcommand{\S}{\ensuremath{\mathbb S}} % Sphere
 
-\DeclarePairedDelimiter\abs{\lvert}{\rvert} % Absolute value
-\DeclarePairedDelimiter\norm{\lVert}{\rVert} % Norm
+% The definitions of abs and norms are more complex than a simple \DeclarePairedDelimiter in order
+% to fix the behavior of subscripts.
+% The whole point of the hack is that instead of $\lvert ...\rvert$, \abs{...} will do ${\lvert...\rvert}$.
+% The presence of { } fixes the subscripts.
+\makeatletter % Absolute value
+\DeclarePairedDelimiter{\@tmpabs}{\lvert}{\rvert}
+\newcommand{\@absstar}[1]{{\@tmpabs*{#1}}}
+\newcommand{\@absnostar}[2][]{{\@tmpabs[#1]{#2}}}
+\newcommand{\abs}{\@ifstar\@absstar\@absnostar}
+\makeatother
+
+\makeatletter % Norm
+\DeclarePairedDelimiter{\@tmpnorm}{\lVert}{\rVert}
+\newcommand{\@normstar}[1]{{\@tmpnorm*{#1}}}
+\newcommand{\@normnostar}[2][]{{\@tmpnorm[#1]{#2}}}
+\newcommand{\norm}{\@ifstar\@normstar\@normnostar}
+\makeatother
+
+
 \newcommand{\weakto}{\ensuremath{\rightharpoonup}} % Weak convergence
 \newcommand{\weakstarto}{\ensuremath{\stackrel{*}{\rightharpoonup}}} % Weak-* convergence
 \newcommand{\scalprod}[2]{\ensuremath{\langle #1, #2\rangle}} % Scalar product
@@ -186,7 +203,7 @@
 
 \newcommand{\de}{\ensuremath{\,\mathrm d}}% The differential for integrals (\de x)
 \newcommand{\diff}{\ensuremath{\mathrm D}}% Differential symbol
-\newcommand{\eps}{\ensuremath{\epsilon}}
+\newcommand{\eps}{\ensuremath{\varepsilon}}
 \newcommand{\id}{\ensuremath{\mathds{1}}}% Identity.
 \newcommand{\emptyparam}{\ensuremath{\,\cdot\,}}% Empty parameter (a dot).
 \newcommand{\defeq}{\ensuremath{\coloneqq}}% Equal in a definition.
