@@ -43,8 +43,9 @@
 \usepackage{forloop} % forloop construct
 \usepackage{xstring}
 \usepackage{tikz}
+\usetikzlibrary{babel} % Fix buggy interaction with babel package
 \usepackage{emptypage} % Empty page are shown completely white.
-% \usepackage{showlabels} % To show labels' names when in draft mode.
+% \usepackage[inline]{showlabels} % To show labels' names when in draft mode.
 
 
 % Possible customization of header and footer
@@ -177,6 +178,24 @@
 \ExplSyntaxOff
 \makeatother
 
+
+% Definition of the reptheorem environment. This environment should be used to state again
+% a theorem that has already been stated.
+% Usage: \begin{reptheorem}{labelofoldtheorem} ... statement .. \end{reptheorem}.
+% In this way the counter of the "repeated theorem" is the same in both situation. The statements
+% can be different.
+% See: https://tex.stackexchange.com/questions/422/how-do-i-repeat-a-theorem-number#comment31433_443
+\makeatletter
+\newcommand{\newreptheorem}[2]{%
+  \newtheorem*{rep@#1}{\rep@title}%
+  \newenvironment{rep#1}[1]%
+    {\def\rep@title{#2 \ref*{##1}}\begin{rep@#1}}%
+    {\end{rep@#1}}%
+}%
+\makeatother
+\theoremstyle{plain}
+\newreptheorem{theorem}{Theorem}
+
 % Short commands for frequently used number sets.
 \newcommand{\N}{\ensuremath{\mathbb N}} % Natural numbers
 \newcommand{\Z}{\ensuremath{\mathbb Z}} % Integers
@@ -229,8 +248,8 @@
 
 % Probability related commands
 \newcommand{\prob}{\ensuremath{\mathcal{P}}}% The space of probabilities.
-\newcommand{\E}[1]{\ensuremath{\mathop{\mathbb{E}}\left[#1\right]}}% Expected value.
-\renewcommand{\P}[1]{\ensuremath{\mathop{\mathbb{P}}\left(#1\right)}}% Probability.
+\newcommand{\E}[1]{\ensuremath{\operatorname{\mathbb{E}}\left[#1\right]}}% Expected value.
+\renewcommand{\P}[1]{\ensuremath{\operatorname{\mathbb{P}}\left(#1\right)}}% Probability.
 
 % Divergence
 \let\divsymb\div
