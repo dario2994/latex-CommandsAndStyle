@@ -69,7 +69,11 @@
 \usepackage{sectsty}
 \allsectionsfont{\raggedright}
 
-\usepackage[nameinlink]{cleveref} % References show what kind of thing is being referenced (theorem, lemma, proposition...)
+% References show what kind of thing is being referenced (theorem, lemma, proposition...).
+% The 'sort' argument tells cleveref not to compress a consecutive numbered references.
+\usepackage[nameinlink,capitalise,sort]{cleveref}
+\crefname{equation}{}{} % Makes cref behave like eqref.
+
 \newcommand{\crefpairconjunction}{ e }
 \newcommand{\crefrangepreconjunction}{da }
 \newcommand{\crefrangeconjunction}{ a }
