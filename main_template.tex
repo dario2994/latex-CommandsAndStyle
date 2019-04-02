@@ -1,9 +1,12 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[reqno,11pt,final]{amsart}
 \usepackage{glaudo_pkg_en}
-% \usepackage{glaudo_pkg_it}
 
-\title{Template of Main Latex File}
-\author{Federico Glaudo\thanks{Scuola Normale Superiore, \url{federico.glaudo@sns.it}.}}
+\title[Latex Template]{Template of Main Latex File}
+\author{F. Glaudo}
+\address{ETH, Rämistrasse 101, 8092 Zürich, Switzerland}
+\email{federico.glaudo@math.ethz.ch}
+
+% \author{Second author...}
 
 % \makeindex[title=Indice analitico]
 % \indexsetup{level=\section}
@@ -15,7 +18,7 @@
 \tableofcontents
 
 \section{First section}
-\begin{theorem}\label{thm:first_thm}
+\begin{theorem}[Super Theorem]\label{thm:first_thm}
     Hello.
 \end{theorem}
 \begin{theorem}\label{thm:second_thm}
@@ -31,6 +34,7 @@
 \cref{lem:first_lemma,lem:second_lemma}\\
 \cref{thm:second_thm}\\
 \cref{lem:second_lemma}
+\crefwithname{thm:first_thm}
 
 % \printbibliography[heading=bibintoc]
 

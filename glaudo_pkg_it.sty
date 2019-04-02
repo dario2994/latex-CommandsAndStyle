@@ -3,12 +3,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
 \usepackage{csquotes} % Needed to use multiple languages in the bibliography.
-% \usepackage[a4paper,twoside,top=1in, bottom=1.1in, left=1in, right=1in]{geometry}
 \usepackage[a4paper,twoside]{geometry}
 \usepackage{graphicx}
 \usepackage[backend=biber,style=alphabetic,bibencoding=utf8,language=auto,autolang=other]{biblatex}
 \usepackage{caption} % Better handling of empty figure captions.
-\usepackage{hyperref} % References become hyperlinks.
+\usepackage[hyperfootnotes=false]{hyperref} %See: https://github.com/plk/biblatex/issues/744
 \hypersetup{
 	colorlinks = true,
 	linkcolor = {blue},
@@ -29,7 +28,7 @@
 \usepackage{mathrsfs} % Just for cool sigma-algebra
 \usepackage{faktor} % For quotients
 \usepackage{dsfont} % For identity.
-\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{array}
 \usepackage{hhline}
 \usepackage{enumitem} % Customize enumerate and itemize
@@ -44,9 +43,15 @@
 \usepackage{xstring}
 \usepackage{tikz}
 \usetikzlibrary{babel} % Fix buggy interaction with babel package
+\usetikzlibrary{cd} % Commutative diagrams
 \usepackage{emptypage} % Empty page are shown completely white.
+\usepackage{listings} % Source code.
 % \usepackage[inline]{showlabels} % To show labels' names when in draft mode.
 
+
+% Page geometry
+% \voffset=-1cm \textheight=23cm
+% \textwidth=16cm \evensidemargin=0.3cm \oddsidemargin=-0.3cm
 
 % Possible customization of header and footer
 \setlength{\headheight}{16pt} 
@@ -54,25 +59,22 @@
 \fancyhead{}
 \fancyhead[LE]{\slshape\nouppercase{\leftmark}}
 \fancyhead[RO]{\slshape\nouppercase{\rightmark}}
-% Author or title
-% \makeatletter 
-% 	\let\titlecopy\@title 
-% 	\let\authorcopy\@author
-% \makeatother
-% \fancyhead[LO, RE]{\slshape\authorcopy}
+\addtolength{\textheight}{-\baselineskip}
+\addtolength{\footskip}{\baselineskip}
 
-% Uncomment the following line to ignore negligible overfull badboxes.
+% Uncomment to ignore negligible overfull badboxes.
 %\hfuzz=10pt
 
-% Avoids overflow in section titles.
+% Uncomment to avoid overflows in section titles (does not work with amsart).
 % See: https://tex.stackexchange.com/questions/295910/why-default-behavior-of-section-title-is-to-overflow
-\usepackage{sectsty}
-\allsectionsfont{\raggedright}
+% \usepackage{sectsty}
+% \allsectionsfont{\raggedright}
 
 % References show what kind of thing is being referenced (theorem, lemma, proposition...).
 % The 'sort' argument tells cleveref not to compress a consecutive numbered references.
 \usepackage[nameinlink,capitalise,sort]{cleveref}
 \crefname{equation}{}{} % Makes cref behave like eqref.
+\crefname{enumi}{}{} % Avoid showing ``item (1)''
 
 \newcommand{\crefpairconjunction}{ e }
 \newcommand{\crefrangepreconjunction}{da }
@@ -91,6 +93,7 @@
 \newtheorem{exercise}[results]{Esercizio}
 \newtheorem{fact}[results]{Fatto}
 \newtheorem{problem}[results]{Problema}
+\newtheorem{conjecture}[results]{Congettura}
 
 \newtheorem*{theorem*}{Teorema}
 \newtheorem*{lemma*}{Lemma}
@@ -99,6 +102,7 @@
 \newtheorem*{exercise*}{Esercizio}
 \newtheorem*{fact*}{Fatto}
 \newtheorem*{problem*}{Problema}
+\newtheorem*{conjecture*}{Congettura}
 
 \theoremstyle{remark}
 \newtheorem{remark}[results]{Nota}
@@ -132,55 +136,8 @@
 
 \newcommand{\ImplicationProof}[2]{$\text{\ref{#1}}\implies\text{\ref{#2}}$} % Special reference for implication of propositions
 
-% Redefinition of cref, in order to have the name of the theorem in case it has one.
-% It's hardcoded and not exactly clean and easy.
-\let\crefnoname\cref
-\makeatletter
-\ExplSyntaxOn
-\let\@tempcref\cref
-\newcommand{\myref}[1]{
-	\IfSubStr{#1}{,}{
-		\@tempcref{#1}%
-	}
-	{
-		\ifcsname r@#1\endcsname% Is the reference defined?
-			\edef\@RefInfo{\csname r@#1\endcsname}% All the data about the reference.
-			\edef\@CompleteCounter{\expandafter\@fourthoffive\@RefInfo}% Expanded name of the counter.
-			
-			\expandafter\IfBeginWith{\@CompleteCounter}{equation}{% Is the reference an equation?
-				\@tempcref{#1}%
-			}
-			{
-			\expandafter\IfBeginWith{\@CompleteCounter}{figure}{% Is the reference a figure?
-				\@tempcref{#1}%
-			}
-			{
-				\edef\@RefName{\expandafter\@thirdoffive\@RefInfo}% If defined, it containes the reference name.
-				\StrLen{\@RefName}[\@RefNameLen]
-				
-				\ifthenelse{\@RefNameLen<2}{% Name is empty or only 1 char long?
-					\@tempcref{#1}%
-				}
-				{
-					\@tempcref{#1}~(\nameref*{#1})%
-				}
-			}
-			}
-% 			\begin{itemize}
-% 				\item \expandafter\@firstoffive\@mytxt
-% 				\item \expandafter\@secondoffive\@mytxt
-% 				\item \expandafter\@thirdoffive\@mytxt
-% 				\item \expandafter\@fourthoffive\@mytxt
-% 				\item \expandafter\@fifthoffive\@mytxt
-% 			\end{itemize}
-		\else
-			\@tempcref{#1}
-		\fi
-	}
-}
-\renewcommand{\cref}{\myref}
-\ExplSyntaxOff
-\makeatother
+% Reference to theorems with names.
+\newcommand{\crefwithname}[1]{\cref{#1}~(\nameref*{#1})}
 
 
 % Definition of the reptheorem environment. This environment should be used to state again
@@ -302,5 +259,7 @@
 % \DeclareMathOperator\Lip{Lip} % Lipschitz functions and/or Lipschitz constant.
 % \DeclareMathOperator\graph{graph} % Graph of a function.
 % \newcommand{\Ricci}{\ensuremath{Ric}} % Ricci tensor.
+% \DeclareMathOperator{\Isom}{Isom}
+% \DeclareMathOperator*{\Per}{Per}%Perimeter
 
 % Ad-hoc commands should go after this line.
